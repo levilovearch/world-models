@@ -12,12 +12,12 @@ def generate_data(rollouts, data_dir, noise_type): # pylint: disable=R0914
     """ Generates data """
     assert exists(data_dir), "The data directory does not exist..."
 
-    env = gym.make("CarRacing-v0")
-    seq_len = 1000
+    env = gym.make("CarRacing-v2")
+    seq_len = 10000
 
     for i in range(rollouts):
         env.reset()
-        env.env.viewer.window.dispatch_events()
+        #env.env.viewer.window.dispatch_events()
         if noise_type == 'white':
             a_rollout = [env.action_space.sample() for _ in range(seq_len)]
         elif noise_type == 'brown':
@@ -32,8 +32,8 @@ def generate_data(rollouts, data_dir, noise_type): # pylint: disable=R0914
             action = a_rollout[t]
             t += 1
 
-            s, r, done, _ = env.step(action)
-            env.env.viewer.window.dispatch_events()
+            s, r, done, _, _ = env.step(action)
+            #env.env.viewer.window.dispatch_events()
             s_rollout += [s]
             r_rollout += [r]
             d_rollout += [done]
